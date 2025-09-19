@@ -855,7 +855,7 @@ void Eluna::OnPlayerSpellDamage(Player *player, Unit *target, int32 &damage, uin
         else if (!lua_isnoneornil(L, r))
         {
             // 不是数字也不是nil，记录警告
-            Report("OnPlayerSpellDamage: expected number return value");
+            Report(L, "OnPlayerSpellDamage: expected number return value"); // 修复这里
         }
         lua_pop(L, 1);
     }
