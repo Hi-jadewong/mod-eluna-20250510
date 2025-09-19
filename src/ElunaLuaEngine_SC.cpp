@@ -1208,7 +1208,7 @@ public:
     // 在 ElunaLuaEngine_SC.cpp 中修改
     void OnDamageWithSpell(Unit *attacker, Unit *victim, uint32 &damage,
                            SpellInfo const *spellInfo, SpellSchoolMask schoolMask,
-                           DamageEffectType damageType, Spell const /*damageSpell*/) override
+                           DamageEffectType damageType, Spell const * /*damageSpell*/) override
     {
         if (attacker && attacker->IsPlayer())
             sEluna->OnPlayerSpellDamage(attacker->ToPlayer(), victim, damage, spellInfo->Id, schoolMask, damageType);
