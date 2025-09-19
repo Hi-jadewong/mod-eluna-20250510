@@ -828,34 +828,33 @@ void Eluna::OnPlayerDamage(Player *player, Unit *target, uint32 &damage)
 }
 
 // jadewong-DW-2025-09-19
-void Eluna::OnPlayerSpellDamage(Player *player, Unit *target, int32 &damage, uint32 spellId)
+void Eluna::OnPlayerSpellDamage(Player *player, Unit *target, uint32 &damage, uint32 spellId)
 {
     START_HOOK(PLAYER_EVENT_ON_SPELL_DAMAGE);
 
-    // 添加参数检查
     if (!player || !target)
         return;
 
     Push(player);
     Push(target);
-    Push(damage);
-    Push(spellId);
+    Push(damage);  // 第3个参数：damage
+    Push(spellId); // 第4个参数：spellId
 
-    int damageIndex = 3; // damage是第3个参数
-    int n = SetupStack(PlayerEventBindings, key, 4);
+    int damageIndex = 3; // damage 是第3个参数，用于 ReplaceArgument
+    int n = SetupStack(PlayerEventBindings, PLAYER_EVENT_ON_SPELL_DAMAGE, 4);
 
     while (n > 0)
     {
         int r = CallOneFunction(n--, 4, 1);
         if (lua_isnumber(L, r))
         {
-            damage = CHECKVAL<int32>(L, r);
+            damage = static_cast<uint32>(lua_tointeger(L, r));
             ReplaceArgument(damage, damageIndex);
         }
         else if (!lua_isnoneornil(L, r))
         {
-            // 不是数字也不是nil，记录警告
-            // Report(L, "OnPlayerSpellDamage: expected number return value"); // 修复这里
+            // 可选：记录日志
+            // sLog->outError("[Eluna] OnPlayerSpellDamage: expected number return value");
         }
         lua_pop(L, 1);
     }

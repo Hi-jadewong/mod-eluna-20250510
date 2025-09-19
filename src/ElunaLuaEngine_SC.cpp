@@ -1202,10 +1202,13 @@ public:
         if (attacker->IsCreature())
             sEluna->OnCreatureDamage(attacker->ToCreature(), receiver, damage);
     }
-    void ModifySpellDamageTaken(Unit *target, Unit *attacker, int32 &damage, SpellInfo const *spellInfo) override
+    // OnDamageWithSpell->eluna:OnPlayerSpellDamage
+    // Jadewong
+    // 2025-09-20
+    void OnDamageWithSpell(Unit *victim, Unit *attacker, uint32 &damage, SpellInfo const *spellInfo, SpellSchoolMask /*schoolMask*/, DamageEffectType /*damageType*/) override
     {
         if (attacker->IsPlayer())
-            sEluna->OnPlayerSpellDamage(attacker->ToPlayer(), target, damage, spellInfo->Id);
+            sEluna->OnPlayerSpellDamage(attacker->ToPlayer(), victim, damage, spellInfo->Id);
     }
 };
 
