@@ -231,7 +231,7 @@ namespace Hooks
         PLAYER_EVENT_ON_AURA_APPLY = 64,             // (event, player, aura)
         PLAYER_EVENT_ON_HEAL = 65,                   // (event, player, target, gain) - Can return new heal amount
         PLAYER_EVENT_ON_DAMAGE = 66,                 // (event, player, target, damage) - Can return new damage amount
-        PLAYER_EVENT_ON_SPELL_DAMAGE = 67,           // (event, player, target, damage,spellId) - Can return new damage amount and spellId
+        PLAYER_EVENT_ON_SPELL_DAMAGE = 67,           // (event, player, target, damage, spellId, schoolMask, damageType) - Can return new damage amount
 
         PLAYER_EVENT_COUNT
     };

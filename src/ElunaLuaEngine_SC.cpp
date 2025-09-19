@@ -1205,10 +1205,17 @@ public:
     // OnDamageWithSpell->eluna:OnPlayerSpellDamage
     // Jadewong
     // 2025-09-20
-    void OnDamageWithSpell(Unit *victim, Unit *attacker, uint32 &damage, SpellInfo const *spellInfo, SpellSchoolMask /*schoolMask*/, DamageEffectType /*damageType*/) override
+    // 在 ElunaLuaEngine_SC.cpp 中修改
+    void OnDamageWithSpell(Unit *attacker, Unit *victim, uint32 &damage,
+                           SpellInfo const *spellInfo, SpellSchoolMask schoolMask,
+                           DamageEffectType damageType, Spell const *damageSpell) override
     {
-        if (attacker->IsPlayer())
-            sEluna->OnPlayerSpellDamage(attacker->ToPlayer(), victim, damage, spellInfo->Id);
+        if (attacker && attacker->IsPlayer())
+            sEluna->OnPlayerSpellDamage(attacker->ToPlayer(), victim, damage, spellInfo->Id, schoolMask, static_cast<uint32>(damageType));
+
+        // 可选：也为生物添加处理
+        // if (attacker && attacker->IsCreature())
+        //     sEluna->OnCreatureSpellDamage(attacker->ToCreature(), victim, damage, spellInfo->Id, schoolMask, static_cast<uint32>(damageType));
     }
 };
 
