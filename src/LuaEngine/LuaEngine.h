@@ -579,7 +579,7 @@ public:
     void OnPlayerAuraApply(Player *player, Aura *aura);
     void OnPlayerHeal(Player *player, Unit *target, uint32 &gain);
     void OnPlayerDamage(Player *player, Unit *target, uint32 &gain);
-    void OnPlayerSpellDamage(Player *player, Unit *target, uint32 damage, uint32 spellId, SpellSchoolMask schoolMask, DamageEffectType damageType);
+    void OnPlayerSpellDamage(Player *player, Unit *target, uint32 &damage, uint32 spellId, SpellSchoolMask schoolMask, DamageEffectType damageType);
 
     /* Vehicle */
     void OnInstall(Vehicle *vehicle);

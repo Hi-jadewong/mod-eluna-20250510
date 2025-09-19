@@ -827,7 +827,7 @@ void Eluna::OnPlayerDamage(Player *player, Unit *target, uint32 &damage)
     CleanUpStack(3);
 }
 
-void Eluna::OnPlayerSpellDamage(Player *player, Unit *target, uint32 damage, uint32 spellId, SpellSchoolMask schoolMask, DamageEffectType damageType)
+void Eluna::OnPlayerSpellDamage(Player *player, Unit *target, uint32 &damage, uint32 spellId, SpellSchoolMask schoolMask, DamageEffectType damageType)
 {
     START_HOOK(PLAYER_EVENT_ON_SPELL_DAMAGE);
 
@@ -862,43 +862,4 @@ void Eluna::OnPlayerSpellDamage(Player *player, Unit *target, uint32 damage, uin
     }
 
     CleanUpStack(6);
-}
-
-// jadewong-DW-2025-09-19
-// void Eluna::OnPlayerSpellDamage(Player *player, Unit *target, uint32 &damage, uint32 spellId, uint32 schoolMask, uint32 damageType)
-// {
-//     START_HOOK(PLAYER_EVENT_ON_SPELL_DAMAGE);
-
-//     // 添加参数检查
-//     if (!player || !target)
-//         return;
-
-//     Push(player);
-//     Push(target);
-//     Push(damage);
-//     Push(spellId);
-//     Push(schoolMask);
-//     Push(damageType);
-
-//     int damageIndex = 2; // damage是第3个参数（从0开始计数）
-//     int n = SetupStack(PlayerEventBindings, key, 6);
-
-//     while (n > 0)
-//     {
-//         int r = CallOneFunction(n--, 6, 1);
-//         if (lua_isnumber(L, r))
-//         {
-//             damage = CHECKVAL<uint32>(L, r);
-//             ReplaceArgument(damage, damageIndex);
-//         }
-//         else if (!lua_isnoneornil(L, r))
-//         {
-//             // 不是数字也不是nil，记录警告
-//             // Report(L, "OnPlayerSpellDamage: expected number return value for damage modification");
-//         }
-//         lua_pop(L, 1);
-//     }
-
-//     CleanUpStack(6);
-// }
 }

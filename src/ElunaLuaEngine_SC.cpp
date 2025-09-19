@@ -1211,7 +1211,7 @@ public:
                            DamageEffectType damageType, Spell const *damageSpell) override
     {
         if (attacker && attacker->IsPlayer())
-            sEluna->OnPlayerSpellDamage(attacker->ToPlayer(), victim, damage, spellInfo->Id, schoolMask, static_cast<uint32>(damageType));
+            sEluna->OnPlayerSpellDamage(attacker->ToPlayer(), victim, damage, spellInfo->Id, schoolMask, damageType);
 
         // 可选：也为生物添加处理
         // if (attacker && attacker->IsCreature())
