@@ -232,6 +232,7 @@ namespace Hooks
         PLAYER_EVENT_ON_HEAL = 65,                   // (event, player, target, gain) - Can return new heal amount
         PLAYER_EVENT_ON_DAMAGE = 66,                 // (event, player, target, damage) - Can return new damage amount
         PLAYER_EVENT_ON_SPELL_DAMAGE = 67,           // (event, player, target, damage, spellId, schoolMask, damageType) - Can return new damage amount
+        PLAYER_EVENT_ON_SPELL_HIT = 68,
 
         PLAYER_EVENT_COUNT
     };

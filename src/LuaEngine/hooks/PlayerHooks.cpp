@@ -827,9 +827,11 @@ void Eluna::OnPlayerDamage(Player *player, Unit *target, uint32 &damage)
     CleanUpStack(3);
 }
 
-void Eluna::OnPlayerSpellDamage(Player *player, Unit *target, uint32 &damage, uint32 spellId, SpellSchoolMask schoolMask, DamageEffectType damageType)
+void Eluna::OnPlayerSpellDamage(Player *player, Unit *target, uint32 &damage,
+                                uint32 spellId, SpellSchoolMask schoolMask,
+                                DamageEffectType damageType, bool isCritical)
 {
-    START_HOOK(PLAYER_EVENT_ON_SPELL_DAMAGE);
+    START_HOOK(PLAYER_EVENT_ON_SPELL_DAMAGE); // ← 移动到函数体内
 
     // 添加参数检查
     if (!player || !target)
@@ -841,13 +843,14 @@ void Eluna::OnPlayerSpellDamage(Player *player, Unit *target, uint32 &damage, ui
     Push(spellId);
     Push(schoolMask);
     Push(damageType);
+    Push(isCritical); // ← 推送暴击标志
 
-    int damageIndex = 2; // damage是第3个参数（从0开始计数）
-    int n = SetupStack(PlayerEventBindings, key, 6);
+    int damageIndex = 2;                             // damage是第3个参数（从0开始计数）
+    int n = SetupStack(PlayerEventBindings, key, 7); // ← 改为7个参数
 
     while (n > 0)
     {
-        int r = CallOneFunction(n--, 6, 1);
+        int r = CallOneFunction(n--, 7, 1); // ← 改为7个参数
         if (lua_isnumber(L, r))
         {
             damage = CHECKVAL<uint32>(L, r);
@@ -861,5 +864,34 @@ void Eluna::OnPlayerSpellDamage(Player *player, Unit *target, uint32 &damage, ui
         lua_pop(L, 1);
     }
 
-    CleanUpStack(6);
+    CleanUpStack(7); // ← 改为7个参数
+}
+
+void Eluna::OnSpellHit(Unit *attacker, Unit *victim, uint32 damage,
+                       uint32 spellId, bool isCritical, SpellSchoolMask schoolMask)
+{
+    START_HOOK(PLAYER_EVENT_ON_SPELL_HIT);
+
+    // 参数检查
+    if (!attacker || !victim)
+        return;
+
+    // 推送6个参数到 Lua 栈
+    Push(attacker);   // 参数1
+    Push(victim);     // 参数2
+    Push(damage);     // 参数3
+    Push(spellId);    // 参数4
+    Push(isCritical); // 参数5
+    Push(schoolMask); // 参数6
+
+    // 设置栈并调用绑定函数 - 6个参数
+    int n = SetupStack(PlayerEventBindings, key, 6);
+
+    // 这个钩子是只读的，不修改任何参数
+    while (n > 0)
+    {
+        CallOneFunction(n--, 6, 0); // 6个参数，0个返回值
+    }
+
+    CleanUpStack(6); // 清理6个参数
 }

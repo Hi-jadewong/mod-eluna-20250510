@@ -579,7 +579,16 @@ public:
     void OnPlayerAuraApply(Player *player, Aura *aura);
     void OnPlayerHeal(Player *player, Unit *target, uint32 &gain);
     void OnPlayerDamage(Player *player, Unit *target, uint32 &gain);
-    void OnPlayerSpellDamage(Player *player, Unit *target, uint32 &damage, uint32 spellId, SpellSchoolMask schoolMask, DamageEffectType damageType);
+    // Jadewong 2025-09-20
+    // OnPlayerSpellDamage
+    void OnPlayerSpellDamage(Player *player, Unit *target, uint32 &damage,
+                             uint32 spellId, SpellSchoolMask schoolMask,
+                             DamageEffectType damageType, bool isCritical);
+    // 结束
+    // Jadewong 2025-09-21
+    // OnSpellHit
+    void OnSpellHit(Unit *attacker, Unit *victim, uint32 damage,
+                    uint32 spellId, bool isCritical, SpellSchoolMask schoolMask);
 
     /* Vehicle */
     void OnInstall(Vehicle *vehicle);
